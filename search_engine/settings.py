@@ -1,31 +1,31 @@
+import ast
+import os
 from pathlib import Path
-import os, ast
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'main.apps.MainConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.postgres',
+    "main.apps.MainConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "corsheaders",
-    'django_celery_beat',
-    "compressor"
+    "django_celery_beat",
+    "compressor",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.gzip.GZipMiddleware",
@@ -33,36 +33,35 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.http.ConditionalGetMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.admindocs.middleware.XViewMiddleware",
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.cache.FetchFromCacheMiddleware",
     "htmlmin.middleware.MarkRequestMiddleware",
 ]
 
-ROOT_URLCONF = 'search_engine.urls'
+ROOT_URLCONF = "search_engine.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'search_engine.wsgi.application'
-
+WSGI_APPLICATION = "search_engine.wsgi.application"
 
 dotenv_file = BASE_DIR / ".env"
 if os.path.isfile(dotenv_file):
@@ -72,7 +71,7 @@ if os.path.isfile(dotenv_file):
 
     PRODUCTION_SERVER = False
     DEBUG = ast.literal_eval(os.environ.get("DEBUG", "True").capitalize())
-    SECRET_KEY = 'django-insecure-keb*=hj$2$k%9$5k#916t0d(8_-0tm6mbtb+))2&j)hlv03paw'
+    SECRET_KEY = "django-insecure-keb*=hj$2$k%9$5k#916t0d(8_-0tm6mbtb+))2&j)hlv03paw"
     CACHE_MIDDLEWARE_SECONDS = 0
     LOCAL = True
 else:
@@ -83,15 +82,15 @@ else:
 
 if os.getenv("DATABASE_URL"):
     import dj_database_url
+
     DATABASES = {
         "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
     }
 else:
-    raise RuntimeError('DATABASE_URL is not set in environment variable')
+    raise RuntimeError("DATABASE_URL is not set in environment variable")
 
 if not DEBUG:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 
 if not os.getenv("WHITENOISE"):
     MIDDLEWARE = ([MIDDLEWARE[0]] +
@@ -101,11 +100,10 @@ if not os.getenv("WHITENOISE"):
         "whitenoise.runserver_nostatic",
     ] + [INSTALLED_APPS[-1]])
 
-
 if PRODUCTION_SERVER:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Strict'
+    SESSION_COOKIE_SAMESITE = "Strict"
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000
@@ -114,32 +112,34 @@ if PRODUCTION_SERVER:
     SECURE_REFERRER_POLICY = "same-origin"
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Asia/Calcutta'
+TIME_ZONE = "Asia/Calcutta"
 
 USE_I18N = True
 
@@ -150,8 +150,7 @@ USE_TZ = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
@@ -167,17 +166,17 @@ MEDIA_URL = "/media/"
 WHITENOISE_MAX_AGE = 9000
 WHITENOISE_SKIP_COMPRESS_EXTENSIONS = []
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_METHODS = [
     "GET",
     "POST",
 ]
-ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS  = [
+ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
-    "http://127.0.0.1:8000",    
+    "http://127.0.0.1:8000",
 ]
 
 COMPRESS_ENABLED = ast.literal_eval(os.environ.get("COMPRESS_ENABLED", "True"))
@@ -189,9 +188,9 @@ COMPRESS_PRECOMPILERS = (
 COMPRESS_CSS_HASHING_METHOD = "content"
 COMPRESS_FILTERS = {
     "css": [
-       "compressor.filters.css_default.CssAbsoluteFilter",
+        "compressor.filters.css_default.CssAbsoluteFilter",
         "compressor.filters.cssmin.rCSSMinFilter",
-    ],     
+    ],
     "js": [
         "compressor.filters.jsmin.JSMinFilter",
     ],
@@ -208,7 +207,7 @@ WHITENOISE_SKIP_COMPRESS_EXTENSIONS = []
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_IMPORTS = ("main")
+CELERY_IMPORTS = "main"
 BROKER_URL = os.environ.get("CLOUDAMQP_URL", "amqp://localhost")
 CELERY_ACCEPT_CONTENT = [
     "application/json",
@@ -216,15 +215,19 @@ CELERY_ACCEPT_CONTENT = [
 CELERY_TASK_SERIALIZER = CELERY_RESULT_SERIALIZER = "json"
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379') #expected port, otherwise you can alter it
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION":
+        os.environ.get("REDIS_URL", "redis://127.0.0.1:6379"
+                       ),  # expected port, otherwise you can alter it
     }
 }
 
 if ast.literal_eval(os.environ.get("LOGGING", "True").capitalize()):
-    from .django_logging import LOGGING
     import logging
+
+    from .django_logging import LOGGING
+
     try:
         logging.config.dictConfig(LOGGING)
     except:
