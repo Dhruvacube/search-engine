@@ -1,4 +1,4 @@
-from djongo import models
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
 import ast
@@ -16,17 +16,21 @@ class ListField(models.Field):
         except (TypeError, ValueError):
             raise ValidationError("This value must be an list or a string represents an list.")
     
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, *args, **kwargs):
+        print(value)
         return self.to_python(value)
 
     def formfield(self, **kwargs):
         defaults = {'form_class': CharField(widget=forms.Textarea)}
         defaults.update(kwargs)
-        return super(CurrencyField, self).formfield(**defaults)
+        return super(ListField, self).formfield(**defaults)
     
     def get_db_prep_value(self, value, *args, **kwargs):
         if value is None:
             return None
+        value = value.rstrip('[')
+        value = value.lstrip(']')
+        value = value.split(',')
         return str(value)
 
 

@@ -3,7 +3,7 @@ import urllib
 from functools import lru_cache
 from django.contrib import messages
 from typing import Optional
-from django.db.models import F
+from django.db.models import F, Q
 
 import nltk
 import requests
@@ -22,6 +22,7 @@ from nltk.tokenize import word_tokenize
 from requests import get, utils
 from textblob import TextBlob
 from .models import CrawledWebPages, ToBeCrawledWebPages
+from django.contrib.postgres.search import SearchVector
 
 nlp = spacy.load("en_core_web_md")
 stop_words = set(stopwords.words('english'))
@@ -148,25 +149,26 @@ def search_results(request):
     start_time = time.time()
     
     data1 = CrawledWebPages.objects.filter(
-        url__text_search=query_correct.lower(),
-        ip_address__text_search=query_correct.lower(),
-        title__text_search=query_correct.lower(),
-        keywords_meta_tags__text_search=query_correct.lower(),
-        keywords_in_site__text_search=query_correct.lower(),
-        stripped_request_body__text_search=query_correct.lower(),
-        keywords_ranking__text_search=query_correct.lower()
+        Q(url__icontains=query_correct.lower()) | 
+        Q(ip_address__icontains=query_correct.lower()) |
+        Q(title__icontains=query_correct.lower()) |
+        Q(keywords_meta_tags__icontains=query_correct.lower()) |
+        Q(keywords_in_site__icontains=query_correct.lower()) |
+        Q(stripped_request_body__icontains=query_correct.lower()) |
+        Q(keywords_ranking=[query_correct.lower()])
     )
     data2 = CrawledWebPages.objects.filter(
-        url__text_search=request.GET.get("q"),
-        ip_address__text_search=request.GET.get("q"),
-        title__text_search=request.GET.get("q"),
-        keywords_meta_tags__text_search=request.GET.get("q"),
-        keywords_in_site__text_search=request.GET.get("q"),
-        stripped_request_body__text_search=request.GET.get("q"),
-        keywords_ranking__text_search=request.GET.get("q")
+        Q(url__icontains=request.GET.get("q")) |
+        Q(ip_address__icontains=request.GET.get("q")) |
+        Q(title__icontains=request.GET.get("q")) |
+        Q(keywords_meta_tags__icontains=request.GET.get("q")) |
+        Q(keywords_in_site__icontains=request.GET.get("q")) |
+        Q(stripped_request_body__icontains=request.GET.get("q")) |
+        Q(keywords_ranking=[request.GET.get("q")])
     )
-
-    if data1.union(data2).count() > 0:
+    # data1 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=query_correct.lower())
+    # data2 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=request.GET.get("q"))
+    if len(list(data1.all())) > 0 or len(list(data2.all())) > 0:
         data1.update(uses=F('uses')+1)
         data2.update(uses=F('uses')+1)
         results = data1.union(data2).all()
