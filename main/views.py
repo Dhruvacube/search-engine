@@ -49,7 +49,7 @@ def submit_site(request):
         ToBeCrawledWebPages.objects.filter(url=site).update_or_create(url=site)
         messages.success(request,"The crawling data was updated :)")
     return render(request, 'submit_site.html')
- 
+
 @sync_to_async
 @require_GET
 @cache_page(60 * 15)
@@ -78,7 +78,7 @@ def search_results(request):
                     proxies = {"http":proxy}
             response = get(google_url, headers=headers, proxies=proxies)
             return response.text
-        
+
         def keywords_gen_and_rank(body: str):
             doc = nlp(body)
             keywords = list(doc.ents)
@@ -147,7 +147,7 @@ def search_results(request):
         request.session['recorded_keywords'] = auto_suggestions
     query_correct = TextBlob(query).correct().__str__()    
     start_time = time.time()
-    
+
     data1 = CrawledWebPages.objects.filter(
         Q(url__icontains=query_correct.lower()) | 
         Q(ip_address__icontains=query_correct.lower()) |
@@ -177,7 +177,7 @@ def search_results(request):
         print('hi')
         results = search(request.GET.get("q"))
 
-        
+
     end_time = time.time()
     
     if isinstance(results, list):

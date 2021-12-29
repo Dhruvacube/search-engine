@@ -43,7 +43,7 @@ def give_start_urls(scan_internal_links: bool, domain: str):
 
 class KonohagakureCrawlerCommandLine(scrapy.Spider):
     name : str = 'konohagakure_to_be_crawled_command_line'
-    
+
     def __init__(self, *args,**kwargs):
         self.allowed_domains: list = [kwargs.get('allowed_domains')]
         self.scan_internal_links: bool = True or kwargs.get('scan_internal_links')

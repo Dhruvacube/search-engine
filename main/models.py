@@ -15,7 +15,7 @@ class ListField(models.Field):
             return ast.literal_eval(value)
         except (TypeError, ValueError):
             raise ValidationError("This value must be an list or a string represents an list.")
-    
+
     def from_db_value(self, value, *args, **kwargs):
         return self.to_python(value)
 
@@ -40,7 +40,7 @@ class StatusCodes(models.IntegerChoices):
     SWITCH_PROTOCOLS = 101, _('Switching protocols')
     PROCESSING = 102, _('Processing')
     EARLY_HINTS = 103, _('Early Hints')
-        
+
     #2xx Succesful
     OK = 200
     CREATED = 201, _('Created')
@@ -52,7 +52,7 @@ class StatusCodes(models.IntegerChoices):
     MULTI_STATUS=207, _('Multi-Status')
     ALREADY_REPORTED=208, _('Already Reported')
     IM_USED=226, _('IM Used')
-        
+
     #3xx Redirection
     MULTI_CHOICES = 300, _('Multiple Choices')
     MOVED_PERMANENTLY = 301, _('Moved Permanently')
@@ -63,7 +63,7 @@ class StatusCodes(models.IntegerChoices):
     SWITCH_PROXY=306, _('Switch Proxy')
     TEMP_REDIRECT=307, _('Temporary Redirect')
     PERMANENT_REDIRECT=308, _('Permanent Redirect')
-        
+
     #4xx Client Error
     BAD_REQUEST = 400, _('Bad Request')
     UNAUTHORIZED = 401, _('Unauthorized')
@@ -94,7 +94,7 @@ class StatusCodes(models.IntegerChoices):
     RATELIMITED=429, _('Too Many Requests')
     HEADER_LARGE=431, _('Request Header Fields Too Large')
     UNAVAILABLE_LEGALLY=451, _('Unavailable For Legal Reasons')
-        
+
     #5xx Server Error
     INTERNAL_SERVER_ERROR = 500, _('Internal Server Error')
     NOT_IMPLEMENTED = 501, _('Not Implemented')
@@ -117,18 +117,18 @@ class CrawledWebPages(models.Model):
     ip_address = models.GenericIPAddressField(protocol='both', unpack_ipv4=True,null=True,blank=True)
     http_status = models.IntegerField(default=StatusCodes.OK, choices=StatusCodes.choices)
     scan_internal_links=models.BooleanField(default=True)
-    
+
     keywords_meta_tags = ListField(null=True,blank=True,default=list)
     keywords_in_site = ListField(null=True,blank=True,default=list)
-    
+
     stripped_request_body = models.TextField(null=True,blank=True,help_text=_('Mainly the description to display'))
-    
+
     keywords_ranking=models.JSONField(null=True,blank=True,default=dict)
     last_crawled=models.DateTimeField(default=now)
-    
+
     def __str__(self):
         return self.url
-    
+
     def save(self,*args,**kwargs):
         self.last_crawled = now()
         if self.url.startswith('https://') or self.url.startswith('http://'):
@@ -140,7 +140,7 @@ class CrawledWebPages(models.Model):
             self.url = self.url.strip()
         self.url = self.url.strip('/')
         super().save(*args,**kwargs)
-    
+
     class Meta:
         ordering = ("uses",)
         verbose_name_plural = _('Crawled Web Pages')
@@ -154,10 +154,10 @@ class ToBeCrawledWebPages(models.Model):
     scan_internal_links=models.BooleanField(default=True)
     http_status = models.IntegerField(default=StatusCodes.OK, choices=StatusCodes.choices)
     last_crawled=models.DateTimeField(default=now)
-    
+
     def __str__(self):
         return self.url
-    
+
     def save(self,*args,**kwargs):
         self.last_crawled = now()
         if self.url.startswith('https://') or self.url.startswith('http://'):
@@ -169,7 +169,7 @@ class ToBeCrawledWebPages(models.Model):
             self.url = self.url.strip()
         self.url = self.url.strip('/')
         super().save(*args,**kwargs)
-    
+
     class Meta:
         ordering = ("last_crawled", )
         verbose_name_plural = _('To Be Crawled Web Pages')

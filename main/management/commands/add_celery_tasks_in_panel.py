@@ -9,7 +9,7 @@ from django_celery_beat.models import IntervalSchedule, PeriodicTask
 class Command(BaseCommand):
     help = "Add the celery tasks to the django panel"
     requires_system_checks = output_transaction = True
-        
+
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE("Starting"))
         try:
