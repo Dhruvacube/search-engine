@@ -4,7 +4,6 @@ from functools import lru_cache
 from django.contrib import messages
 from typing import Optional
 from django.db.models import F
-from django.contrib.postgres.search import SearchQuery, SearchVector
 
 import nltk
 import requests
@@ -148,8 +147,24 @@ def search_results(request):
     query_correct = TextBlob(query).correct().__str__()    
     start_time = time.time()
     
-    data1 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=query_correct.lower())
-    data2 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=request.GET.get("q"))
+    data1 = CrawledWebPages.objects.filter(
+        url__text_search=query_correct.lower(),
+        ip_address__text_search=query_correct.lower(),
+        title__text_search=query_correct.lower(),
+        keywords_meta_tags__text_search=query_correct.lower(),
+        keywords_in_site__text_search=query_correct.lower(),
+        stripped_request_body__text_search=query_correct.lower(),
+        keywords_ranking__text_search=query_correct.lower()
+    )
+    data2 = CrawledWebPages.objects.filter(
+        url__text_search=request.GET.get("q"),
+        ip_address__text_search=request.GET.get("q"),
+        title__text_search=request.GET.get("q"),
+        keywords_meta_tags__text_search=request.GET.get("q"),
+        keywords_in_site__text_search=request.GET.get("q"),
+        stripped_request_body__text_search=request.GET.get("q"),
+        keywords_ranking__text_search=request.GET.get("q")
+    )
 
     if data1.union(data2).count() > 0:
         data1.update(uses=F('uses')+1)

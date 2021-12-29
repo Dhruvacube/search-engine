@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres',
     "corsheaders",
     'django_celery_beat',
     "compressor"
@@ -82,10 +81,16 @@ else:
     SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY")
 
 if os.getenv("DATABASE_URL"):
-    import dj_database_url
     DATABASES = {
-        "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
-    }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'search',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': os.environ.get('DATABASE_URL')
+            }  
+        }
+}
 else:
     raise RuntimeError('DATABASE_URL is not set in environment variable')
 

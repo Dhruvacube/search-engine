@@ -1,7 +1,33 @@
-from django.db import models
+from djongo import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
-from django.contrib.postgres.fields import ArrayField
+import ast
+from django.forms import CharField
+
+class ListField(models.Field):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def to_python(self, value):
+        if value is None or isinstance(value, list):
+            return value
+        try:
+            return ast.literal_eval(value)
+        except (TypeError, ValueError):
+            raise ValidationError("This value must be an list or a string represents an list.")
+    
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class': CharField(widget=forms.Textarea)}
+        defaults.update(kwargs)
+        return super(CurrencyField, self).formfield(**defaults)
+    
+    def get_db_prep_value(self, value, *args, **kwargs):
+        if value is None:
+            return None
+        return str(value)
 
 
 class StatusCodes(models.IntegerChoices):
@@ -88,8 +114,8 @@ class CrawledWebPages(models.Model):
     http_status = models.IntegerField(default=StatusCodes.OK, choices=StatusCodes.choices)
     scan_internal_links=models.BooleanField(default=True)
     
-    keywords_meta_tags = ArrayField(models.CharField(max_length=500),null=True,blank=True,default=list)
-    keywords_in_site = ArrayField(models.CharField(max_length=500),null=True,blank=True,default=list)
+    keywords_meta_tags = ListField(null=True,blank=True,default=list)
+    keywords_in_site = ListField(null=True,blank=True,default=list)
     
     stripped_request_body = models.TextField(null=True,blank=True,help_text=_('Mainly the description to display'))
     
@@ -115,7 +141,7 @@ class CrawledWebPages(models.Model):
         ordering = ("uses",)
         verbose_name_plural = _('Crawled Web Pages')
         indexes = [
-            models.Index(fields=['url'],name="url_idx",include=['uses']),
+            models.Index(fields=['url', 'title', 'ip_address', 'keywords_in_site', 'keywords_meta_tags', 'stripped_request_body'],name="url_idx",include=['uses']),
         ]
 
 
