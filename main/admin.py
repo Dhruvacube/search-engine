@@ -19,7 +19,7 @@ class CrawledWebPagesAdmin(admin.ModelAdmin):
         "robot_txt_filepath",
         "last_crawled"
     )
-    
+
     list_filter = ('last_crawled',)
     readonly_fields = (
         'uses',
@@ -29,7 +29,7 @@ class CrawledWebPagesAdmin(admin.ModelAdmin):
         'keywords_ranking',
         'last_crawled'
     )
-    
+
     search_fields = list_display+list_filter
     list_per_page = 34
     fieldsets = (
@@ -52,7 +52,7 @@ class ToBeCrawledWebPagesAdmin(admin.ModelAdmin):
         (_('Status'), {'fields': ("http_status","scan_internal_links")}),
         (_('Last Crawled'), {'fields': ('last_crawled',)})
     )
-    
+
 
 @admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):

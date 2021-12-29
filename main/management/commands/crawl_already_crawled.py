@@ -10,7 +10,7 @@ from main.com_crawler import crawl, formatter, requests_crawl
 class Command(BaseCommand):
     help = "Scraps already scrapped sites in database"
     requires_system_checks = output_transaction = True
-        
+
     def handle(self, *args, **options):
         for i in CrawledWebPages.objects.iterator():
             try:
@@ -25,4 +25,4 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.SUCCESS("Done"))
                 except Exception as e:
                     self.stdout.write(self.style.ERROR(e))
-        
+

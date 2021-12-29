@@ -20,7 +20,7 @@ stop_words = set(stopwords.words('english'))
 
 class KonohagakureCrawler(scrapy.Spider):
     name : str = 'konohagakure_to_be_crawled'
-    
+
     def __init__(self, *args,**kwargs):
         self.allowed_domains: list = [kwargs.get('allowed_domains')]
         self.scan_internal_links: bool = False
@@ -79,4 +79,4 @@ class KonohagakureCrawler(scrapy.Spider):
                 response_model.save()
             except Exception as e:
                 print(e)
-            
+
