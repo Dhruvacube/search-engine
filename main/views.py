@@ -169,10 +169,12 @@ def search_results(request):
     # data1 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=query_correct.lower())
     # data2 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=request.GET.get("q"))
     if len(list(data1.all())) > 0 or len(list(data2.all())) > 0:
+        print('hi')
         data1.update(uses=F('uses')+1)
         data2.update(uses=F('uses')+1)
         results = data1.union(data2).all()
     else:
+        print('hi')
         results = search(request.GET.get("q"))
 
         

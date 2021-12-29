@@ -17,7 +17,6 @@ class ListField(models.Field):
             raise ValidationError("This value must be an list or a string represents an list.")
     
     def from_db_value(self, value, *args, **kwargs):
-        print(value)
         return self.to_python(value)
 
     def formfield(self, **kwargs):
@@ -28,6 +27,7 @@ class ListField(models.Field):
     def get_db_prep_value(self, value, *args, **kwargs):
         if value is None:
             return None
+        value=str(value)
         value = value.rstrip('[')
         value = value.lstrip(']')
         value = value.split(',')
