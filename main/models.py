@@ -25,7 +25,7 @@ class ListField(models.Field):
         defaults = {'form_class': CharField(widget=forms.Textarea)}
         defaults.update(kwargs)
         return super(ListField, self).formfield(**defaults)
-    
+
     def get_db_prep_value(self, value, *args, **kwargs):
         if value is None:
             return None
