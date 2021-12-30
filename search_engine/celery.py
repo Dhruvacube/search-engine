@@ -14,10 +14,12 @@ app = Celery("search_engine", broker_url=settings.BROKER_URL)
 app.config_from_object("django.conf:settings")
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+
 @app.task
 def crawl_already_crawled():
-    call_command('crawl_already_crawled')
+    call_command("crawl_already_crawled")
+
 
 @app.task
 def crawl_to_be_crawled():
-    call_command('crawl_to_be_crawled')
+    call_command("crawl_to_be_crawled")
