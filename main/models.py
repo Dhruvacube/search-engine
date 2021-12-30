@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
 import ast
 from django.forms import CharField
+from django.core.exceptions import ValidationError
 
 class ListField(models.Field):
     def __init__(self, *args, **kwargs):
@@ -11,12 +12,8 @@ class ListField(models.Field):
     def to_python(self, value):
         if value is None or isinstance(value, list):
             return value
-        try:
-            return ast.literal_eval(value)
-        except (TypeError, ValueError):
-            raise ValidationError("This value must be an list or a string represents an list.")
-        except Exception as e:
-            raise ValidationError(e)
+        value = str(value).rstrip(']').lstrip('[').split(',')
+        return value
 
     def from_db_value(self, value, *args, **kwargs):
         return self.to_python(value)

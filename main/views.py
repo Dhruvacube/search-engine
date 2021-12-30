@@ -3,7 +3,7 @@ import urllib
 from functools import lru_cache
 from django.contrib import messages
 from typing import Optional
-from django.db.models import F, Q
+from django.db.models import Q
 
 import nltk
 import requests
@@ -21,6 +21,7 @@ from django.views.decorators.cache import cache_page
 from nltk.tokenize import word_tokenize
 from requests import get, utils
 from textblob import TextBlob
+import pymongo, os
 from .models import CrawledWebPages, ToBeCrawledWebPages
 
 nlp = spacy.load("en_core_web_md")
@@ -165,6 +166,11 @@ def search_results(request):
         Q(stripped_request_body__icontains=request.GET.get("q")) |
         Q(keywords_ranking=[request.GET.get("q")])
     )
+    
+    client = pymongo.MongoClient(os.environ.get('DATABASE_URL'))
+    db = client['search']
+    print(list(db['CrawledWebPages'].find( { '$text': { '$search': request.GET.get("q") } } )))
+
     # data1 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=query_correct.lower())
     # data2 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=request.GET.get("q"))
 
