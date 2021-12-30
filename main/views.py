@@ -22,7 +22,6 @@ from nltk.tokenize import word_tokenize
 from requests import get, utils
 from textblob import TextBlob
 from .models import CrawledWebPages, ToBeCrawledWebPages
-from django.contrib.postgres.search import SearchVector
 
 nlp = spacy.load("en_core_web_md")
 stop_words = set(stopwords.words('english'))
@@ -168,13 +167,11 @@ def search_results(request):
     )
     # data1 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=query_correct.lower())
     # data2 = CrawledWebPages.objects.annotate(search=SearchVector('url', 'ip_address','title','keywords_meta_tags','keywords_in_site','stripped_request_body','keywords_ranking')).filter(search=request.GET.get("q"))
-    if len(list(data1.all())) > 0 or len(list(data2.all())) > 0:
-        print('hi')
-        data1.update(uses=F('uses')+1)
-        data2.update(uses=F('uses')+1)
-        results = data1.union(data2).all()
+    
+    if len(list(set(list(data1.iterator())+list(data2.iterator())))) > 0:
+        results = list(set(list(data1.iterator())+list(data2.iterator())))
+        search(request.GET.get("q"))
     else:
-        print('hi')
         results = search(request.GET.get("q"))
 
 
@@ -183,7 +180,7 @@ def search_results(request):
     if isinstance(results, list):
         data_fetched = len(results)
     else:
-        data_fetched = results.count()
+        data_fetched = len(list(data1.all())) + len(list(data2.all()))
         
     page = int(request.GET.get("page", 1))
     paginator = Paginator(results, 10)

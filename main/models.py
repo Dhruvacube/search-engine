@@ -15,6 +15,8 @@ class ListField(models.Field):
             return ast.literal_eval(value)
         except (TypeError, ValueError):
             raise ValidationError("This value must be an list or a string represents an list.")
+        except Exception as e:
+            raise ValidationError(e)
 
     def from_db_value(self, value, *args, **kwargs):
         return self.to_python(value)
@@ -27,10 +29,6 @@ class ListField(models.Field):
     def get_db_prep_value(self, value, *args, **kwargs):
         if value is None:
             return None
-        value=str(value)
-        value = value.rstrip('[')
-        value = value.lstrip(']')
-        value = value.split(',')
         return str(value)
 
 
@@ -113,7 +111,6 @@ class CrawledWebPages(models.Model):
     title = models.CharField(max_length=500,help_text=_('The Title'),blank=True,null=True)
     sitemap_filepath = models.SlugField(max_length=250,help_text=_('The sitemap.xml file path'),null=True,blank=True)
     robot_txt_filepath = models.SlugField(max_length=250,help_text=_('The robot.txt file path'),null=True,blank=True)
-    uses = models.PositiveBigIntegerField(default=0)
     ip_address = models.GenericIPAddressField(protocol='both', unpack_ipv4=True,null=True,blank=True)
     http_status = models.IntegerField(default=StatusCodes.OK, choices=StatusCodes.choices)
     scan_internal_links=models.BooleanField(default=True)
@@ -142,10 +139,9 @@ class CrawledWebPages(models.Model):
         super().save(*args,**kwargs)
 
     class Meta:
-        ordering = ("uses",)
         verbose_name_plural = _('Crawled Web Pages')
         indexes = [
-            models.Index(fields=['url', 'title', 'ip_address', 'keywords_in_site', 'keywords_meta_tags', 'stripped_request_body'],name="url_idx",include=['uses']),
+            models.Index(fields=['url', 'title', 'ip_address', 'keywords_in_site', 'keywords_meta_tags', 'stripped_request_body'],name="url_idx"),
         ]
 
 

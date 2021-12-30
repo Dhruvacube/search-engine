@@ -1,1 +1,3 @@
 python manage.py collectcompress
+python manage.py add_celery_tasks_in_panel
+python manage.py migrate

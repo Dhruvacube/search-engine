@@ -12,7 +12,6 @@ class CrawledWebPagesAdmin(admin.ModelAdmin):
         "url",
         "title",
         "http_status",
-        "uses",
         "ip_address",
         "scan_internal_links",
         "sitemap_filepath",
@@ -22,7 +21,6 @@ class CrawledWebPagesAdmin(admin.ModelAdmin):
 
     list_filter = ('last_crawled',)
     readonly_fields = (
-        'uses',
         'keywords_meta_tags',
         'keywords_in_site',
         'stripped_request_body',
@@ -34,7 +32,6 @@ class CrawledWebPagesAdmin(admin.ModelAdmin):
     list_per_page = 34
     fieldsets = (
         (_("Url"), {"fields": ("url","title")}),
-        (_('Rank'), {"fields": ("uses",)}),
         (_('Status'), {'fields': ("http_status",)}),
         (_('Crawl File Path'), {'fields': ("sitemap_filepath", "robot_txt_filepath", "scan_internal_links")}),
         (_('Request Body'), {'fields': ('keywords_meta_tags', 'keywords_in_site', 'stripped_request_body', 'keywords_ranking')}),
