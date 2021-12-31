@@ -32,6 +32,7 @@ stop_words = set(stopwords.words("english"))
 client = pymongo.MongoClient(os.environ.get("DATABASE_URL"))
 db = client.search
 
+
 @sync_to_async
 @require_GET
 @cache_page(60 * 15)
@@ -53,13 +54,14 @@ def submit_site(request):
         messages.success(request, "The crawling data was updated :)")
     return render(request, "submit_site.html")
 
+
 @lru_cache
 def search(
-        term: str,
-        num_results: Optional[int] = 15,
-        lang: Optional[str] = "en",
-        proxy=None,
-    ) -> list:
+    term: str,
+    num_results: Optional[int] = 15,
+    lang: Optional[str] = "en",
+    proxy=None,
+) -> list:
     headers = utils.default_headers()
     headers.update({
         "User-Agent": return_random_user_agent(),
@@ -140,31 +142,29 @@ def search(
     html = fetch_results(term, num_results, lang)
     return list(parse_results(html))
 
+
 @lru_cache
 def search_pymongo(term) -> list:
     pymongo_search_results = list(
-        db.main_crawledwebpages.aggregate(
-            [{
-                '$search': {
-                    'index': 'url_idx',
-                    'text': {
-                        'query': str(term),
-                        'path': {
-                        'wildcard': '*'
-                        }
+        db.main_crawledwebpages.aggregate([{
+            "$search": {
+                "index": "url_idx",
+                "text": {
+                    "query": str(term),
+                    "path": {
+                        "wildcard": "*"
                     }
-                }
-            }]
-        )
-    )
+                },
+            }
+        }]))
     if len(pymongo_search_results) <= 0:
         return []
-    pymongo_search_formatted_results=[]
+    pymongo_search_formatted_results = []
     for i in pymongo_search_results:
-        i.pop('_id')
+        i.pop("_id")
         pymongo_search_formatted_results.append(CrawledWebPages(**i))
     return pymongo_search_formatted_results
-    
+
 
 @sync_to_async
 @require_GET
@@ -200,7 +200,11 @@ def search_results(request):
         | Q(stripped_request_body__icontains=request.GET.get("q").lower())
         | Q(keywords_ranking=[request.GET.get("q").lower()]))
 
-    results = list(set(list(data1.iterator()) + list(data2.iterator()) + search_pymongo(request.GET.get("q").lower()) + search_pymongo(query_correct.lower())))
+    results = list(
+        set(
+            list(data1.iterator()) + list(data2.iterator()) +
+            search_pymongo(request.GET.get("q").lower()) +
+            search_pymongo(query_correct.lower())))
     if len(results) > 0:
         search(request.GET.get("q"))
     else:
