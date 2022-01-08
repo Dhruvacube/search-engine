@@ -16,6 +16,8 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from scrapy.linkextractors import LinkExtractor
 
+from main.models import CrawledWebPages, ToBeCrawledWebPages
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 dotenv_file = BASE_DIR / ".env"
@@ -26,23 +28,21 @@ if os.path.isfile(dotenv_file):
 
     dotenv.load_dotenv(dotenv_file)
     settings.configure(
-        DATABASES = {
-        "default": {
-            "ENGINE": "djongo",
-            "NAME": "search",
-            "ENFORCE_SCHEMA": False,
-            "CLIENT": {
-                "host": os.environ.get("DATABASE_URL")
-            },
-        }
-    },
+        DATABASES={
+            "default": {
+                "ENGINE": "djongo",
+                "NAME": "search",
+                "ENFORCE_SCHEMA": False,
+                "CLIENT": {
+                    "host": os.environ.get("DATABASE_URL")
+                },
+            }
+        },
         INSTALLED_APPS=["main.apps.MainConfig"],
     )
     django.setup()
 else:
     raise RuntimeError("DATABASE_URL is not set in environment variable")
-
-from main.models import CrawledWebPages, ToBeCrawledWebPages
 
 
 def give_start_urls(scan_internal_links: bool, domain: str):
