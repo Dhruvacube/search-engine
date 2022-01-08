@@ -62,6 +62,39 @@ It address the following [SANS Top 25 Most Dangerous Software Errors](https://ww
 34. Improper Privilege Management
 35. Improper Certificate Validation
 
+## Packages that were required in making this project
+- [django](https://www.djangoproject.com/)
+- [dj-database-url](https://pypi.org/project/dj-database-url/)
+- [celery](https://docs.celeryproject.org/)
+- [django-redis](https://github.com/jazzband/django-redis)
+- [django-htmlmin](https://github.com/cobrateam/django-htmlmin)
+- [gunicorn](https://gunicorn.org/)
+- [redis](https://github.com/redis/redis-py)
+- [hiredis](https://github.com/redis/hiredis)
+- [djongo](https://www.djongomapper.com/)
+- [pymongo[srv]](https://pymongo.readthedocs.io/)
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
+- [requests](https://pypi.org/project/requests/)
+- [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
+- [textblob](https://textblob.readthedocs.io/en/dev/)
+- [spacy](https://spacy.io/)
+- [nltk](https://www.nltk.org/)
+- [spacy-alignments](https://pypi.org/project/spacy-alignments/)
+- [spacy-legacy](https://pypi.org/project/spacy-legacy/)
+- [spacy-loggers](https://pypi.org/project/spacy-loggers/)
+- [colorama](https://pypi.org/project/colorama/)
+- [transformers](https://github.com/huggingface/transformers)
+- [Scrapy](https://scrapy.org/)
+- [cdx-toolkit](https://pypi.org/project/cdx-toolkit/)
+- [uvicorn](https://www.uvicorn.org/)
+- [whitenoise](http://whitenoise.evans.io/)
+- [colorlog](https://pypi.org/project/colorlog/)
+- [uvloop](http://uvloop.readthedocs.io/)
+- [spacy-transformers](https://pypi.org/project/spacy-transformers/)
+- [spacy-lookups-data](https://pypi.org/project/spacy-lookups-data/)
+- [django-celery-beat](https://github.com/celery/django-celery-beat)
+- [django-cors-headers](https://pypi.org/project/django-cors-headers/)
+
 ## Building Docker Image
 Just run 
 
