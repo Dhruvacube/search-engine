@@ -4,13 +4,14 @@
 
 Overview of the project:
 ```
-An efficient Search Engine with the following features it should have distributed crawlers to crawl the private/air-gapped networks (data sources in these networks might include websites, files, databases) and must work behind sections of networks secured by firewalls
+An efficient Search Engine with the following features:
+It has distributed crawlers to crawl the private/air-gapped networks (data sources in these networks might include websites, files, databases) and works behind sections of networks secured by firewalls
 
-It should use AI/ML/NLP/BDA for better search (queries and results) It should abide by the secure coding practices (
- and SANS Top 25 web vulnerability mitigation techniques.) feel free to improvise your solution and be creative with your approach Goal
+It uses AI/ML/NLP/BDA for better search (queries and results) It abides by the secure coding practices (and SANS Top 25 web vulnerability mitigation techniques.) 
 
-Have a search engine which takes keyword/expression as an input and crawls the web (internal network or internet) to get all the relevant information. The application shouldn't have any vulnerabilities, make sure it complies with OWASP Top 10 Outcome Write a code which will scrape data, match it with the query and give out relevant/related information. Note - Make search as robust as possible (eg, it can correct misspelt query, suggest similar search terms, etc) be creative in your approach. Result obtained from search engine should display all the relevant matches as per search query/keyword along with the time taken by search engine to fetch that result There is no constraint on programming language.
+It is a type of a search engine which takes keyword/expression as an input and crawls the web (internal network or internet) to get all the relevant information. The application dosen't have any vulnerabilities, it complies with OWASP Top 10 Outcome. This application scrape data, match it with the query and give out relevant/related information. 
 
+Note - Search as robust as possible (eg, it can correct misspelt query, suggest similar search terms, etc) be creative in your approach. Result obtained from search engine should displays the relevant matches as per search query/keyword along with the time taken by search engine to fetch that result.
 ```
 
 ## Features
