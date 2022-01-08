@@ -95,20 +95,10 @@ It address the following [SANS Top 25 Most Dangerous Software Errors](https://ww
 - [django-celery-beat](https://github.com/celery/django-celery-beat)
 - [django-cors-headers](https://pypi.org/project/django-cors-headers/)
 
-## Building Docker Image
-Just run 
 
-```docker
-docker build .
-```
-Also check this [out](https://stackoverflow.com/questions/59608788/unable-to-start-docker-desktop-on-windows-10)
-If you wish you can do teh necessary image tagging.
-
-After building the image install the docker image.
-
-## Hosting Guide (without the docker)
+## Hosting Guide
 To run **Konohagakure Search** you need [python3.9](https://www.python.org/downloads/release/python-390/), latest version of [golang](https://go.dev/),
-[postgres](https://www.postgresql.org/), [rabbitmq](https://www.rabbitmq.com/) and [redis](https://redis.io/)
+[mongodb](https://www.mongodb.com/b), [rabbitmq](https://www.rabbitmq.com/) and [redis](https://redis.io/)
 
 See their installation instruction and download it properly.
 
