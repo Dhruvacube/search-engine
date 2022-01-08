@@ -102,6 +102,8 @@ To run **Konohagakure Search** you need [python3.9](https://www.python.org/downl
 
 See their installation instruction and download it properly.
 
+After installtion the mongodb, just go ahead and create a database named `search`, and then create a search index manually from compass.
+
 After downloading the above mentioned softwares, now run the following commands in console after opening the terminal:
 
 #### 1. Clone the repository
