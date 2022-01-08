@@ -110,7 +110,7 @@ After downloading the above mentioned softwares, now run the following commands 
 #### 1. Clone the repository
 Clone the repository using git
 ```git
-git clone https://github.com/Sainya-Ranakshetram-Submission/search-engine.git
+git clone https://github.com/Dhruvacube/search-engine.git
 ```
 #### 2. Install the virtual environment
 ```python
@@ -151,10 +151,9 @@ And to migrate the 10 Lakh dataset of the website for the crawler to crawl, do
 ```python
 python manage.py migrate_default_to_be_crawl_data
 ```
-I have also given some crawled datasets for the reference, you can see it here [data_backup](https://github.com/Sainya-Ranakshetram-Submission/search-engine/blob/master/data_backup)
 
 #### 8. Compress the static files
-Run the following commands to compress the static files (This step is not there in youtube video):
+Run the following commands to compress the static files:
 ```python
 python manage.py collectcompress
 ```
