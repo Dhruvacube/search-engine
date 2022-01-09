@@ -228,5 +228,5 @@ Here in `example.com` replace it with the site you want to crawl (without `http`
 scrapy crawl konohagakure_to_be_crawled_command_line -a allowed_domains=example.com
 ```
 
-[![Secure Coding Challenge | Submission](http://img.youtube.com/vi/tn4KmIxrOhs/0.jpg)](http://www.youtube.com/watch?v=tn4KmIxrOhs "Secure Coding Challenge | Submission")
+[![Secure Coding Challenge | Submission](http://img.youtube.com/vi/j1i2O2r24RM/0.jpg)](http://www.youtube.com/watch?v=j1i2O2r24RM "Secure Coding Challenge | Submission")
 
