@@ -122,7 +122,6 @@ env/scripts/activate
 #### 3. Install the dependencies
 ```python
 pip install --upgrade -r requirements.min.txt
-pip install --upgrade django
 ```
 ```python
 python -m spacy download en_core_web_md
@@ -136,8 +135,9 @@ go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 Rename the [example.env](https://github.com/Sainya-Ranakshetram-Submission/search-engine/blob/master/example.env) to `.env` and setup the environment variables according to your choice.
 
 #### 5. Create a database
-Now open `pgadmin` and create a database named `search_engine`. After creating the database reassign the `DATABASE_URL` value acordingly in `.env` file.
-Note please read this [also](https://github.com/jacobian/dj-database-url#url-schema)
+Just go ahead and create a database named `search`, and then create a search index manually from compass.
+Named the search index that you create as `url_idx`. After creating the database reassign the `DATABASE_URL` value acordingly in `.env` file.
+**Also watch this video for full explaination** [click here](https://www.youtube.com/watch?v=j1i2O2r24RM)
 
 #### 6. Start Rabitmq and Redis Instance
 Read their docs regarding how to start them. [redis](https://redis.io/documentation) [rabbitmq](https://rabbitmq.com/documentation.html)
